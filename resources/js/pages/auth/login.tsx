@@ -1,10 +1,11 @@
-import Checkbox from '@/components/Checkbox';
 import InputError from '@/components/InputError';
-import InputLabel from '@/components/InputLabel';
-import PrimaryButton from '@/components/PrimaryButton';
-import TextInput from '@/components/TextInput';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Loader2 } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 export default function login({
@@ -38,26 +39,38 @@ export default function login({
 
       <form onSubmit={submit}>
         <div>
-          <InputLabel htmlFor="email" value="Email" />
+          <Label
+            htmlFor="email"
+            hasError={!!errors.email}
+          >Email</Label>
 
-          <TextInput
+          <Input
             id="email"
             type="email"
             name="email"
             value={data.email}
             className="mt-1 block w-full"
             autoComplete="username"
-            isFocused={true}
+            autoFocus={true}
             onChange={(e) => setData('email', e.target.value)}
           />
 
-          <InputError message={errors.email} className="mt-2" />
+          {!!errors.email &&
+            <Label
+              htmlFor="email"
+              hasError={true}
+              className="inline-block mt-2"
+            >{errors.email}</Label>
+          }
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
+          <Label
+            htmlFor="password"
+            hasError={!!errors.password}
+          >Password</Label>
 
-          <TextInput
+          <Input
             id="password"
             type="password"
             name="password"
@@ -67,17 +80,23 @@ export default function login({
             onChange={(e) => setData('password', e.target.value)}
           />
 
-          <InputError message={errors.password} className="mt-2" />
+          {!!errors.password &&
+            <Label
+              htmlFor="password"
+              hasError={true}
+              className="inline-block mt-2"
+            >{errors.password}</Label>
+          }
         </div>
 
         <div className="mt-4 block">
-          <label className="flex items-center">
+          <label className="flex items-center space-x-2">
             <Checkbox
               name="remember"
               checked={data.remember}
-              onChange={(e) => setData('remember', e.target.checked)}
+              onCheckedChange={(checked) => setData('remember', !!checked)}
             />
-            <span className="ms-2 text-sm text-gray-600">Remember me</span>
+            <span className="mt-0.5 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Remember me</span>
           </label>
         </div>
 
@@ -85,17 +104,18 @@ export default function login({
           {canResetPassword && (
             <Link
               href={route('password.request')}
-              className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Forgot your password?
             </Link>
           )}
 
-          <PrimaryButton className="ms-4" disabled={processing}>
-            Log in
-          </PrimaryButton>
+          <Button disabled={processing} className="ms-4">
+            { processing && <Loader2 className="animate-spin" />}
+            { !processing && 'LOG IN'}
+          </Button>
         </div>
       </form>
     </GuestLayout>
-  );
+  )
 }
