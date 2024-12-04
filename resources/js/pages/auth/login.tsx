@@ -1,33 +1,32 @@
-import InputError from '@/components/InputError';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import GuestLayout from '@/layouts/guest-layout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Loader2 } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import GuestLayout from '@/layouts/guest-layout'
+import { Head, Link, useForm } from '@inertiajs/react'
+import { Loader2 } from 'lucide-react'
+import { FormEventHandler } from 'react'
 
-export default function login({
+export default function Login({
   status,
   canResetPassword,
 }: {
-  status?: string;
-  canResetPassword: boolean;
+  status?: string
+  canResetPassword: boolean
 }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
     remember: false,
-  });
+  })
 
   const submit: FormEventHandler = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     post(route('login'), {
       onFinish: () => reset('password'),
-    });
-  };
+    })
+  }
 
   return (
     <GuestLayout>
@@ -39,10 +38,9 @@ export default function login({
 
       <form onSubmit={submit}>
         <div>
-          <Label
-            htmlFor="email"
-            hasError={!!errors.email}
-          >Email</Label>
+          <Label htmlFor="email" hasError={!!errors.email}>
+            Email
+          </Label>
 
           <Input
             id="email"
@@ -55,20 +53,21 @@ export default function login({
             onChange={(e) => setData('email', e.target.value)}
           />
 
-          {!!errors.email &&
+          {!!errors.email && (
             <Label
               htmlFor="email"
               hasError={true}
-              className="inline-block mt-2"
-            >{errors.email}</Label>
-          }
+              className="mt-2 inline-block"
+            >
+              {errors.email}
+            </Label>
+          )}
         </div>
 
         <div className="mt-4">
-          <Label
-            htmlFor="password"
-            hasError={!!errors.password}
-          >Password</Label>
+          <Label htmlFor="password" hasError={!!errors.password}>
+            Password
+          </Label>
 
           <Input
             id="password"
@@ -80,13 +79,15 @@ export default function login({
             onChange={(e) => setData('password', e.target.value)}
           />
 
-          {!!errors.password &&
+          {!!errors.password && (
             <Label
               htmlFor="password"
               hasError={true}
-              className="inline-block mt-2"
-            >{errors.password}</Label>
-          }
+              className="mt-2 inline-block"
+            >
+              {errors.password}
+            </Label>
+          )}
         </div>
 
         <div className="mt-4 block">
@@ -96,7 +97,9 @@ export default function login({
               checked={data.remember}
               onCheckedChange={(checked) => setData('remember', !!checked)}
             />
-            <span className="mt-0.5 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Remember me</span>
+            <span className="mt-0.5 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Remember me
+            </span>
           </label>
         </div>
 
@@ -111,8 +114,8 @@ export default function login({
           )}
 
           <Button disabled={processing} className="ms-4">
-            { processing && <Loader2 className="animate-spin" />}
-            { !processing && 'LOG IN'}
+            {processing && <Loader2 className="animate-spin" />}
+            {!processing && 'LOG IN'}
           </Button>
         </div>
       </form>
